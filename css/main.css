@@ -1,0 +1,55 @@
+h1{
+    padding: 10px;
+    text-align: center;
+}
+/* body{ */
+    /* background-image: url(imgs/images.png); */
+/* } */
+
+#Connectfour{
+    z-index: 1;
+    text-align: center;
+}
+img{
+    /* position: absolute; */
+    /* display: flex; */
+    /* justify-content: center; */
+    /* flex-direction: row; */
+    /* height: 653px;
+    width: 836px;
+    opacity: 0.5; */
+    height: 200px;
+    width: 200px;
+}
+table{
+    margin: auto;
+    border-spacing: 25px 17px;
+    float: center;
+    z-index: 2;
+}
+/* #table{ */
+    /* margin: right; */
+    /* display: flex; */
+    /* justify-content: center; */
+    /* position: absolute;
+    z-index: 2; */
+    /* display: flex; */
+/* } */
+td{
+    /* background-color: orange; */
+    width: 90px;
+    height: 90px;
+    text-align: center;
+    border-radius: 55%;
+
+}
+.Row6{
+    background-color: blue;
+}
+
+#Scoretracker{
+    border: 5px solid black;
+}
+#Playerturntracker > p{
+    border: 5px solid black;
+}
