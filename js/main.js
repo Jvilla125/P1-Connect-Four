@@ -14,61 +14,52 @@ const connectFourBoard =  [
 
 let totalChipCount = 42;
 
-/*----- cached element references -----*/
-const allButtonsEl = {
-    startButton: document.getElementById("Start-Button").addEventListener('click',init),
-    resetButton: document.getElementById("Reset-Button").addEventListener('click',init),
-    playAgainButton: document.getElementById("Play-Again").addEventListener('click',init)
-};
+// /*----- cached element references -----*/
+// const allButtonsEl = {
+//     startButton: ),
+//     resetButton: document.getElementById("Reset-Button").addEventListener('click',init),
+//     playAgainButton: document.getElementById("Play-Again").addEventListener('click',init)
+// };
 
-const turnTracker = {
+const startButton = document.getElementById("Start-Button")
+startButton.addEventListener('click', init)
+
+const resetButton = document.getElementById("Reset-Button");
+resetButton.addEventListener('click', init)
+
+const playAgainButton = document.getElementById("Play-Again");
+playAgainButton.addEventListener('click', init)
+
+const scoreString = {
+    playerOne: "Player 1 Score: ",
+    playerTwo: "Player 2 Score: ",
+    draw: "Draw: "
+}
+const playerTracker = {
     playerOne: {
-        playerOne: document.querySelector("#PlayerOne"),
-        playerOneImg: document.querySelector("#PlayerOne > img")
+        playerEl: document.querySelector("#PlayerOne"),
+        playerElImg: document.querySelector("#PlayerOne > img"),
+        turnString: "Player 1's turn",
+        turn: true
     },
     playerTwo: {
-        playerTwo: document.querySelector("#PlayerTwo"),
-        playerTwoImg: document.querySelector("#PlayerTwo > img")
+        playerEl: document.querySelector("#PlayerTwo"),
+        playerElImg: document.querySelector("#PlayerTwo > img"),
+        turnString: "Player 2's turn"
     }
 };
 
-function test(){
-for (let i = 0; i <= connectFourBoard.length;i++){
-    let some = document.getElementById(`#${connectFourBoard[i]}`);
-    console.log(some)
-}
+const scoreTracker = {
+    playerOne: document.querySelector("#P1Score"),
+    playerTwo: document.querySelector("#P2Score"),
+    draw: document.querySelector("#Draw")
 }
 
-// const allRows = {
-//     Row1: {
-//         col1: document.getElementById("#1").addEventListener('click', turnBlue),
-//         col2: document.getElementById("#2"),
-//         col3: document.getElementById("#3"),
-//         col4: document.getElementById("#4"),
-//         col5: document.getElementById("#5"),
-//         col6: document.getElementById("#6"),
-//         col7: document.getElementById("#7")
-//     },
-//     Row2:{
-//         col1: document.getElementById("#9"),
-//         col2: document.getElementById("#10"),
-//         col3: document.getElementById("#11"),
-//         col4: document.getElementById("#12"),
-//         col5: document.getElementById("#13"),
-//         col6: document.getElementById("#14"),
-//         col7: document.getElementById("#15")
-//     }, 
-// };
+const tableEL = document.querySelector("#table");
 
 const playerOne = document.querySelector("#Playerturntracker > p");
 
 /*----- event listeners -----*/
-
-
-
-// Row1.addEventListener('click',function turnBlue(){
-//     Row1.style.background = "blue";
-// });
 
 
 /*----- functions -----*/
@@ -82,42 +73,62 @@ function init(){
         draw: 0
     }
     winner = null;
-     
+    startButton.style.display = "none";
+
     rendor();
+
 }
 
-function turnBlue(){
-    for (let row in Row1){
-        if (!row.classList.contains("")){
-            Row1.col1.setAttribute("class","blue");
-        }
-    };
-}
 
-function turnRed(){
-    for (let row in Row1){
-    if (!row.classList.contains("")){
-        row.setAttribute("class","red");
-        }
+
+
+function updatePlayersTurn(){       //this function will update playerones turn to true or false
+    if (playerTracker.playerOne.turn === true){
+        playerTracker.playerOne.playerEl.style.border = "none"
+        playerTracker.playerTwo.playerEl.style.border = "5px solid gray";
+        playerTracker.playerOne.turn = false;
+    }else{
+        playerTracker.playerOne.playerEl.style.border = "5px solid gray";
+        playerTracker.playerTwo.playerEl.style.border = "none";
+        playerTracker.playerOne.turn = true;
     }
-};
 
-
-
-// const exa = document.querySelector("#One")
-// exa.setAttribute("class", "blue")
-
-// Row1.col1.addEventListener('click',turnBlue);
-// Row1.col2.addEventListener('click',turnRed);
+}
 
 
 function rendor(){
+    // playerTracker.playerOne.playerOneImg.src = "imgs/blue-circle.jpg";
+    // // playerTracker.playerTwo.playerTwoImg.src = "imgs/red-circle.png";
+    
+    resetButton.style.display = "block"
+    // startButton.style.display = "block" //This is commented out for now. Will need when there is a winner
 
-    turnTracker.playerOne.playerOneImg.src = "imgs/blue-circle.jpg";
-    turnTracker.playerTwo.playerTwoImg.src = "imgs/red-circle.png";
+    playerTracker.playerOne.playerEl.style.border = "5px solid gray";
+   
+    for (const scoreCount in score){
+        scoreTracker[scoreCount].innerText = `${scoreString[scoreCount]} ${score[scoreCount]}`;
+    }
 
+    for (const some in playerTracker){
+        playerTracker[some].playerEl.innerText = playerTracker[some].turnString;
+    }
 
-    turnTracker.playerOne.playerOne.style.border = "5px solid gray";
-    turnTracker.playerTwo.playerTwo.style.border = "5px solid gray";
+    
+    tableEL.addEventListener('click', e => {//this checks to see who's turn it is
+        e.preventDefault() 
+        if (playerTracker.playerOne.turn === true){
+            if (!e.target.classList.contains("")){
+                e.target.setAttribute('class', 'blue');  
+            } 
+        }else{
+            if (!e.target.classList.contains("")){
+                e.target.setAttribute('class', 'red');
+            }
+        }
+        updatePlayersTurn();
+    });
+
 }
+
+
 

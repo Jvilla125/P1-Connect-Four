@@ -13,7 +13,7 @@
     <div id="Connectfour">
         <!-- <img src="imgs/images.png"> -->
     </div>
-    <div id="table">
+    <div>
         <table id="table">  <!-- Need to make a 6 row x 7 column-->
             <tr id="Row-6">
                 <td id="36">36</td>
@@ -24,7 +24,7 @@
                 <td id="41">41</td>
                 <td id="42">42</td>
             </tr>
-            <tr id="Row-5">
+            <tr id="Row-5" class="small">
                 <td id="29">29</td>
                 <td id="30">30</td>
                 <td id="31">31</td>
@@ -33,7 +33,7 @@
                 <td id="34">34</td>
                 <td id="35">35</td>
             </tr>
-            <tr id="Row-4">
+            <tr id="Row-4" class="small">
                 <td id="22">22</td>
                 <td id="23">23</td>
                 <td id="24">24</td>
@@ -42,7 +42,7 @@
                 <td id="27">27</td>
                 <td id="28">28</td>
             </tr>
-            <tr id="Row-3">
+            <tr id="Row-3" class="small">
                 <td id="15"><p>15</p></td>
                 <td id="16">16</td>
                 <td id="17">17</td>
@@ -51,7 +51,7 @@
                 <td id="20">20</td>
                 <td id="21">21</td>
             </tr>
-            <tr id="Row-2">
+            <tr id="Row-2" class="small">
                 <td id="8">8</td>
                 <td id="9">9</td>
                 <td id="10">10</td>
@@ -60,7 +60,7 @@
                 <td id="13">13</td>
                 <td id="14">14</td>
             </tr>
-            <tr id="Row-1">
+            <tr id="Row-1" class="small">
                 <td id="1"></td>
                 <td id="2">2</td>
                 <td id="3">3</td>
@@ -73,18 +73,18 @@
     </div>
     <footer>
         <div id="Scoretracker">
-            <p>Player 1 score: </p>
-            <p>Player 2 score: </p>
-            <p>Draw: </p>
+            <p id="P1Score"></p>
+            <p id="P2Score"></p>
+            <p id="Draw"></p>
         </div>
         <div>
-            <button id="Start-Button">Press to Start Game</button>
-            <button id="Reset-Button">Reset</button>
-            <button id="Play-Again">Do you want to play again?</button>
+            <button id="Start-Button" >Press to Start Game</button>
+            <button id="Reset-Button" style="display:none">Reset</button>
+            <button id="Play-Again" style="display:none">Do you want to play again?</button>
         </div>
         <div id="Playerturntracker">
-            <p id="PlayerOne">Player 1's turn<img></p>
-            <p id="PlayerTwo">Player 2's turn<img></p>
+            <p id="PlayerOne"></p>
+            <p id="PlayerTwo"></p>
         </div>
     </footer>
 </body>
