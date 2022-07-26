@@ -13,6 +13,7 @@ table{
     float: center;
     z-index: 2;
     background: lightblue;
+    
 }
 td{
     /* background-color: orange; */
@@ -20,6 +21,7 @@ td{
     height: 90px;
     text-align: center;
     border-radius: 55%;
+   
     /* background-color: lightblue; */
 }
 
@@ -35,7 +37,14 @@ footer{
 .red{
     background-color: red;
 }
+td{
+    background-color: white;
+}
 
+#Start-Button{
+   font-size: 25px; 
+   background-color: lightblue;
+}
 #Playerturntracker > p{
     display: flex;
     flex-direction: column;
