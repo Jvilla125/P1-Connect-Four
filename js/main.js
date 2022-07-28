@@ -29,7 +29,7 @@ startButton.addEventListener('click', init)
 playAgainButton.addEventListener('click', init)
 /*----- functions -----*/
 
-function init(){
+function init(){        //init function restarts the screen everytime it is called
     chipCount = 42;
     winnerMsg.style.display = "none";
     startButton.style.display = "none";
@@ -39,8 +39,8 @@ function init(){
     rendor();
 }
 
-function playAgain(){
-    playAgainButton.style.display = "block"
+function playAgain(){      //playAgain function is called after there is a winner, diplays the start button after there is a winner
+    playAgainButton.style.display = "block"    
     playerTracker.playerOne.playerEl.style.border = "none";
     playerTracker.playerOne.playerEl.classList.remove("blue");
     playerTracker.playerTwo.playerEl.classList.remove("red");
@@ -55,9 +55,9 @@ function playAgain(){
     });
 }
 
-function updatePlayersTurn(){        
-    chipCount--;
-    if (chipCount == 0){
+function updatePlayersTurn(){       //After each turn, the total chip count is being reduced by 1
+    chipCount--;                    // as there are only 42 total turns. If that runs out before there is a winner
+    if (chipCount == 0){            // then the game will end in a draw
         endGame();
     }
     if (playerTracker.playerOne.turn === true){
@@ -71,15 +71,15 @@ function updatePlayersTurn(){
     }
 }
 
-function checkWinner(){
+function checkWinner(){         //There are four conditions that we need to check for a winner
     horizontalWinnerCheck();
     verticalWinnerCheck();
     diagonalUpWinnerCheck();
     diagonalDownWinnerCheck();
 }
 
-function horizontalWinnerCheck(){
-     for (let i = 0; i < cellEl.length; i++){
+function horizontalWinnerCheck(){   //horizontal chekcs if 4 cells have the same class and if they do
+     for (let i = 0; i < cellEl.length; i++){   //add the class "yellow" to highlight the winning chips
         if(i+3 <= cellEl.length){  
             if (cellEl[i].classList.contains('blue') && cellEl[i+1].classList.contains('blue') 
                 && cellEl[i+2].classList.contains('blue') && cellEl[i+3].classList.contains('blue')){
@@ -181,8 +181,8 @@ function diagonalDownWinnerCheck(){
     }
 }
  
-function endGame(){
-    if(chipCount == 0){
+function endGame(){         //After there is a winner or draw, this function displays a messing on the header
+    if(chipCount == 0){     // and calls the function 'playAgain' to ask the user if they want to restart
         winnerMsg.style.display = "block"
         winnerMsg.style.border ="8px solid black"
         winnerMsg.style.background = "yellow"
@@ -216,7 +216,8 @@ function rendor(){
         playerTracker[track].playerEl.innerText = playerTracker[track].turnString;
     }
 
-    //Iterate through of the the cells
+    //Iterate through all of the cells 'cellEl.length' and create an 'click'
+    //event listener for each cell 
     for (let i = 0; i < cellEl.length; i++){     
         cellEl[i].addEventListener('click', e =>{   
         if (cellEl[i].classList.contains("Row1") || (cellEl[i+7].classList.contains("hasChip"))){
