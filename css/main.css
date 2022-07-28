@@ -2,6 +2,9 @@ h1{
     padding: 10px;
     text-align: center;
 }
+body{
+    background-color: rgb(205, 222, 195);
+}
 h2{
     text-align: center;
     background-size: 20px;
@@ -18,19 +21,14 @@ table{
     border-spacing: 25px 17px;
     float: center;
     z-index: 2;
-    background: lightblue;
-    
+    background: rgb(24, 131, 143); 
 }
 td{
-    /* background-color: orange; */
     width: 90px;
     height: 90px;
     text-align: center;
     border-radius: 55%;
-   
-    /* background-color: lightblue; */
 }
-
 footer{
     display: flex;
     flex-direction: row;
@@ -51,11 +49,12 @@ td{
 }
 #Play-Again{
     font-size: 25px; 
-    background-color: lightblue;
+    background-color: rgb(106, 173, 196);
+    margin: 40px;
 }
 #Start-Button{
    font-size: 25px; 
-   background-color: lightblue;
+   background-color: rgb(27, 155, 169);
 }
 #Playerturntracker > p{
     display: flex;

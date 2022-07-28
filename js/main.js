@@ -47,7 +47,8 @@ function playAgain(){
     playerTracker.playerOne.playerEl.classList.remove("blue");
     playerTracker.playerTwo.playerEl.classList.remove("red");
     playerTracker.playerTwo.playerEl.style.border = "none";
-   
+    playerTracker.playerOne.playerEl.style.display = "none";
+    playerTracker.playerTwo.playerEl.style.display = "none";
     playAgainButton.addEventListener('click', e =>{
         columnEl.forEach(item =>{
             item.classList.remove("red", "hasChip", "blue", "yellow");
@@ -213,11 +214,11 @@ function endGame(){
 }
 
 function rendor(){
-
     playerTracker.playerOne.playerEl.style.border = "8px solid black";
     playerTracker.playerOne.playerEl.classList.add("blue");
     playerTracker.playerTwo.playerEl.classList.add("red");
-   
+    playerTracker.playerOne.playerEl.style.display = "block";
+    playerTracker.playerTwo.playerEl.style.display = "block";
     for (const track in playerTracker){
         playerTracker[track].playerEl.innerText = playerTracker[track].turnString;
     }
