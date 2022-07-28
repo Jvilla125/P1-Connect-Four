@@ -34,7 +34,7 @@ td{
 footer{
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
 }
 .blue{
@@ -43,10 +43,16 @@ footer{
 .red{
     background-color: red;
 }
+.yellow{
+    background-color: yellow;
+}
 td{
     background-color: white;
 }
-
+#Play-Again{
+    font-size: 25px; 
+    background-color: lightblue;
+}
 #Start-Button{
    font-size: 25px; 
    background-color: lightblue;

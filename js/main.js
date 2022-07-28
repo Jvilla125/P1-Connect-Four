@@ -1,69 +1,37 @@
 /*----- constants -----*/
 let winner;
-let score;
-
+let chipCount;
 /*----- app's state (variables) -----*/
-const connectFourBoard =  [
-    [42, 41, 40, 39, 38, 37, 36],
-    [35, 34, 33, 32, 31, 30, 29],
-    [28, 27, 26, 25, 24, 23, 21],
-    [20, 19, 18, 17, 16, 15, 14],
-    [13, 12, 11, 10, 9, 8],
-    [7, 6, 5, 4, 3, 2, 1]
-];
-const scoreString = {
-    playerOne: "Player 1 Score: ",
-    playerTwo: "Player 2 Score: ",
-    draw: "Draw: "
-}
-
-// /*----- cached element references -----*/
-
-const winnerMsg = document.querySelector("h2");
-const tableEL = document.querySelector("#table");
-const playerOne = document.querySelector("#Playerturntracker > p");
-const square = document.querySelectorAll("#table td");
-const startButton = document.getElementById("Start-Button")
-startButton.addEventListener('click', init)
-const playAgainButton = document.getElementById("Play-Again");
-playAgainButton.addEventListener('click', init)
-const columnEl = document.querySelectorAll("td");
-const rowEl = document.querySelectorAll("tr")
-
-
 const playerTracker = {
     playerOne: {
         playerEl: document.querySelector("#PlayerOne"),
-        playerElImg: document.querySelector("#PlayerOne > img"),
         turnString: "Player 1's turn",
         turn: true,
         winner: false
     },
     playerTwo: {
         playerEl: document.querySelector("#PlayerTwo"),
-        playerElImg: document.querySelector("#PlayerTwo > img"),
         turnString: "Player 2's turn",
         winner: false
     }
 };
+// /*----- cached element references -----*/
 
-const scoreTracker = {
-    playerOne: document.querySelector("#P1Score"),
-    playerTwo: document.querySelector("#P2Score"),
-    draw: document.querySelector("#Draw")
-}
+const winnerMsg = document.querySelector("h2");
+const playerOne = document.querySelector("#Playerturntracker > p");
+const startButton = document.getElementById("Start-Button")
+const playAgainButton = document.getElementById("Play-Again");
+const columnEl = document.querySelectorAll("td");
+const rowEl = document.querySelectorAll("tr")
 
 /*----- event listeners -----*/
 
-
+startButton.addEventListener('click', init)
+playAgainButton.addEventListener('click', init)
 /*----- functions -----*/
 
 function init(){
-    score = {
-        playerOne: 0,
-        playerTwo: 0,
-        draw: 0
-    }
+    chipCount = 42;
     winner = null;
     winnerMsg.style.display = "none";
     startButton.style.display = "none";
@@ -71,21 +39,28 @@ function init(){
     playerTracker.playerTwo.playerEl.style.border = "none"
     playerTracker.playerOne.turn = true;
     rendor();
-
 }
+
 function playAgain(){
     playAgainButton.style.display = "block"
+    playerTracker.playerOne.playerEl.style.border = "none";
+    playerTracker.playerOne.playerEl.classList.remove("blue");
+    playerTracker.playerTwo.playerEl.classList.remove("red");
+    playerTracker.playerTwo.playerEl.style.border = "none";
+   
     playAgainButton.addEventListener('click', e =>{
         columnEl.forEach(item =>{
-            item.classList.remove("red", "hasChip", "blue");
+            item.classList.remove("red", "hasChip", "blue", "yellow");
         });
         init();
     });
-    
 }
 
-//this function will update playerones turn to true or false
 function updatePlayersTurn(){        
+    chipCount--;
+    if (chipCount == 0){
+        endGame();
+    }
     if (playerTracker.playerOne.turn === true){
         playerTracker.playerOne.playerEl.style.border = "none"
         playerTracker.playerTwo.playerEl.style.border = "8px solid black";
@@ -94,154 +69,179 @@ function updatePlayersTurn(){
         playerTracker.playerOne.playerEl.style.border = "8px solid black";
         playerTracker.playerTwo.playerEl.style.border = "none";
         playerTracker.playerOne.turn = true;
-        
     }
 }
-
 
 function checkWinner(){
     horizontalWinnerCheck();
     verticalWinnerCheck();
-    diagonalWinnerCheck();
+    diagonalUpWinnerCheck();
+    diagonalDownWinnerCheck();
 }
 
 function horizontalWinnerCheck(){
-    for (let i = 0; i < columnEl.length; i++){
-        if (columnEl[i].classList.contains("blue") && columnEl[i+1].classList.contains("blue")
-        && columnEl[i+2].classList.contains("blue") && columnEl[i+3].classList.contains("blue")){
-            playerTracker.playerOne.winner = true;
-            avengersEndGame();
-        } 
-        else{
-         if(columnEl[i].classList.contains("red") && columnEl[i+1].classList.contains("red")
-         && columnEl[i+2].classList.contains("red") && columnEl[i+3].classList.contains("red")){
-            playerTracker.playerTwo.winner = true;
-            avengersEndGame();
-            }
-        } 
+     for (let i = 0; i < columnEl.length; i++){
+        if(i+3 <= columnEl.length){  
+            if (columnEl[i].classList.contains('blue') && columnEl[i+1].classList.contains('blue') && columnEl[i+2].classList.contains('blue') && columnEl[i+3].classList.contains('blue')){
+                columnEl[i].classList.add("yellow");
+                columnEl[i+1].classList.add("yellow");
+                columnEl[i+2].classList.add("yellow");
+                columnEl[i+3].classList.add("yellow");
+                // let columns = [columnEl[i],columnEl[i+1],columnEl[i+2],columnEl[i+3]]
+                playerTracker.playerOne.winner = true;
+                endGame();
+            }else{
+                if(columnEl[i].classList.contains('red') && columnEl[i+1].classList.contains('red') && columnEl[i+2].classList.contains('red') && columnEl[i+3].classList.contains('red')){
+                    columnEl[i].classList.add("yellow");
+                    columnEl[i+1].classList.add("yellow");
+                    columnEl[i+2].classList.add("yellow");
+                    columnEl[i+3].classList.add("yellow");
+                    // let columns = [columnEl[i],columnEl[i+1],columnEl[i+2],columnEl[i+3]]
+                    playerTracker.playerOne.winner = false;
+                    endGame();
+                }
+            } 
+        }
     }
 }
 
+// function checkRows(columns){
+//     for (let i = 0; i < columns.length;i++){
+//         console.log(columns.parent);
+//         if (columns[i].parent(`Row-${i}`) 
+//         && columns[i+1].parentElement.classList.contains(`Row-${i}`)
+//         && columns[i+2].parentElement.classList.contains(`Row-${i}`) 
+//         && columns[i+3].parentElement.classList.contains(`Row-${i}`)){
+//         return true;
+//         }
+//     else{
+//         return false;
+//     }
+//     }
+// }
+
 function verticalWinnerCheck(){
-    for(let i = 0; i < columnEl.length; i++){
-        if (columnEl[i].classList.contains("blue") && columnEl[i+7].classList.contains("blue")
-        && columnEl[i+14].classList.contains("blue") && columnEl[i+21].classList.contains("blue")){
-            playerTracker.playerOne.winner = true;
-            avengersEndGame();
-        }else{
-            if (columnEl[i].classList.contains("red") && columnEl[i+7].classList.contains("red")
-            && columnEl[i+14].classList.contains("red") && columnEl[i+21].classList.contains("red")){
-            playerTracker.playerTwo.winner = true;
-            avengersEndGame();
+    for (let i = 0; i < columnEl.length; i++){
+        if(i+21 <=columnEl.length){
+            if ((columnEl[i].classList.contains('blue')) && (columnEl[i+7].classList.contains('blue')) && (columnEl[i+14].classList.contains('blue')) && (columnEl[i+21].classList.contains('blue'))){
+                columnEl[i].classList.add("yellow");
+                columnEl[i+7].classList.add("yellow");
+                columnEl[i+14].classList.add("yellow");
+                columnEl[i+21].classList.add("yellow");
+                playerTracker.playerOne.winner = true;
+                endGame();
+            }else{
+                if((columnEl[i].classList.contains('red')) && (columnEl[i+7].classList.contains('red')) && (columnEl[i+14].classList.contains('red')) && (columnEl[i+21].classList.contains('red'))){
+                    columnEl[i].classList.add("yellow");
+                    columnEl[i+7].classList.add("yellow");
+                    columnEl[i+14].classList.add("yellow");
+                    columnEl[i+21].classList.add("yellow");
+                    playerTracker.playerOne.winner = false;
+                    endGame();
+                }   
             }
         }
     }
 }
 
-// function diagonalWinnerCheck(){
-//     for(let i = 0; i < columnEl.length; i++){
-//         if (columnEl[i].classList.contains("blue") && columnEl[i+6].classList.contains("blue")
-//         && columnEl[i+12].classList.contains("blue") && columnEl[i+18].classList.contains("blue")){
-//             playerTracker.playerOne.winner = true;
-//             avengersEndGame();
-//         }else{
-//             if (columnEl[i].classList.contains("red") && columnEl[i+6].classList.contains("red")
-//             && columnEl[i+12].classList.contains("red") && columnEl[i+18].classList.contains("red")){
-//             playerTracker.playerTwo.winner = true;
-//             avengersEndGame();
-//             }
-//         }
-//     }
-
-// }
-
-    //horizontal check 
-    // for (let i = 0; i < columnEl.length; i++){
-    //     //horizontal check 
-    //     if (columnEl[i].classList.contains("blue") &&(columnEl[i+1].classList.contains("blue")) 
-    //     && columnEl[i+2].classList.contains("blue") && columnEl[i+3].classList.contains("blue")){
-    //         playerTracker.playerOne.winner = true;
-    //         avengersEndGame();
-    //     } else if (columnEl[i].classList.contains("red") &&(columnEl[i+1].classList.contains("red")) 
-    //     && columnEl[i+2].classList.contains("red") && columnEl[i+3].classList.contains("red")){
-    //         playerTracker.playerTwo.winner = true;
-
-    //         avengersEndGame();
-    //     }      
-    //     else{
-    //         console.log("No winner")
-    //     }
-    //     //vertical check
-    // }
-    
-    
-
-function avengersEndGame(){
-    if (playerTracker.playerOne.winner == true){
+function diagonalUpWinnerCheck(){
+    for (let i = 0; i <= columnEl.length; i++){
+        if(i+18 <=columnEl.length){
+            if (columnEl[i].classList.contains('blue') && columnEl[i+6].classList.contains('blue') && columnEl[i+12].classList.contains('blue') && columnEl[i+18].classList.contains('blue')){
+                columnEl[i].classList.add("yellow");
+                columnEl[i+6].classList.add("yellow");
+                columnEl[i+12].classList.add("yellow");
+                columnEl[i+18].classList.add("yellow");
+                playerTracker.playerOne.winner = true;
+                endGame();
+            }else{
+                if(columnEl[i].classList.contains('red') && columnEl[i+6].classList.contains('red') && columnEl[i+12].classList.contains('red') && columnEl[i+18].classList.contains('red')){
+                    columnEl[i].classList.add("yellow");
+                    columnEl[i+6].classList.add("yellow");
+                    columnEl[i+12].classList.add("yellow");
+                    columnEl[i+18].classList.add("yellow");
+                    playerTracker.playerOne.winner = false;
+                    endGame();
+                }
+            } 
+        }  
+    }
+}
+function diagonalDownWinnerCheck(){
+    for (let i = 0; i <= columnEl.length; i++){
+        if(i+24 <= columnEl.length){
+            if (columnEl[i].classList.contains('blue') && columnEl[i+8].classList.contains('blue') && columnEl[i+16].classList.contains('blue') && columnEl[i+24].classList.contains('blue')){
+                columnEl[i].classList.add("yellow");
+                columnEl[i+8].classList.add("yellow");
+                columnEl[i+16].classList.add("yellow");
+                columnEl[i+24].classList.add("yellow");
+                playerTracker.playerOne.winner = true;
+                endGame();
+            }else{
+                if(columnEl[i].classList.contains('red') && columnEl[i+8].classList.contains('red') && columnEl[i+16].classList.contains('red') && columnEl[i+24].classList.contains('red')){
+                    columnEl[i].classList.add("yellow");
+                    columnEl[i+8].classList.add("yellow");
+                    columnEl[i+16].classList.add("yellow");
+                    columnEl[i+24].classList.add("yellow");
+                    playerTracker.playerOne.winner = false;
+                    endGame();
+                }
+            } 
+        }
+    }
+}
+ 
+function endGame(){
+    if(chipCount == 0){
+        winnerMsg.style.display = "block"
+        winnerMsg.style.border ="8px solid black"
+        winnerMsg.innerText = "Draw!"
+        playAgain();
+    }
+    else if (playerTracker.playerOne.winner == true){
         winnerMsg.style.display = "block"
         winnerMsg.style.border ="8px solid black"
         winnerMsg.innerText = "Player 1 Wins!"
+        
         playAgain();
-    }else if(playerTracker.playerTwo.winner == true){
+    }else {
         winnerMsg.style.display = "block"
         winnerMsg.style.border ="8px solid black"
         winnerMsg.innerText = "Player 2 Wins!"
         playAgain();
-        }
-        else{ 
-            console.log("No winner")
-        }
     }
-
-
+}
 
 function rendor(){
-
-    // resetButton.style.display = "block"
-    // startButton.style.display = "block" //This is commented out for now. Will need when there is a winner
 
     playerTracker.playerOne.playerEl.style.border = "8px solid black";
     playerTracker.playerOne.playerEl.classList.add("blue");
     playerTracker.playerTwo.playerEl.classList.add("red");
    
-    for (const scoreCount in score){
-        scoreTracker[scoreCount].innerText = `${scoreString[scoreCount]} ${score[scoreCount]} `;
-    }
-
     for (const track in playerTracker){
         playerTracker[track].playerEl.innerText = playerTracker[track].turnString;
     }
- 
-    for (let i = 0; i < columnEl.length; i++){
-        columnEl[i].addEventListener('click', e =>{
-        if (columnEl[i].classList.contains("Row1") || (columnEl[i+7].classList.contains("hasChip"))){
-            if(playerTracker.playerOne.turn === true){
-                if(!columnEl[i].classList.contains("blue") && !columnEl[i].classList.contains("red")){
-                    columnEl[i].classList.add('hasChip');
-                    columnEl[i].classList.add('blue');
-                    updatePlayersTurn();
-                    checkWinner();  
-                    // checkWinner();
-                } else{
-                    return
-                }
-            }else{
-                if(!columnEl[i].classList.contains("red") && !columnEl[i].classList.contains("blue")){
-                    columnEl[i].classList.add("hasChip");
-                    columnEl[i].classList.add('red');
-                    updatePlayersTurn();
-                    checkWinner();  
-                    // checkWinner();
-                } else{
-                    return;
-                }
-            }   
-            
-        }   
-         
-    });
-    
-    };
 
+    for (let i = 0; i < columnEl.length; i++){     
+        columnEl[i].addEventListener('click', e =>{   
+        if (columnEl[i].classList.contains("Row1") || (columnEl[i+7].classList.contains("hasChip"))){
+                if(playerTracker.playerOne.turn === true){
+                    if(!columnEl[i].classList.contains("blue") && !columnEl[i].classList.contains("red")){
+                        columnEl[i].classList.add('hasChip');
+                        columnEl[i].classList.add('blue');
+                        updatePlayersTurn(); 
+                        checkWinner();
+                    } 
+                }else{
+                    if(!columnEl[i].classList.contains("red") && !columnEl[i].classList.contains("blue")){
+                        columnEl[i].classList.add("hasChip");
+                        columnEl[i].classList.add('red');
+                        updatePlayersTurn();
+                        checkWinner();
+                    }      
+                }      
+            }   
+        });
+    }
 }
 
