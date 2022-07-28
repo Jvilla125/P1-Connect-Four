@@ -1,6 +1,6 @@
 /*----- constants -----*/
-let winner;
 let chipCount;
+
 /*----- app's state (variables) -----*/
 const playerTracker = {
     playerOne: {
@@ -21,8 +21,7 @@ const winnerMsg = document.querySelector("h2");
 const playerOne = document.querySelector("#Playerturntracker > p");
 const startButton = document.getElementById("Start-Button")
 const playAgainButton = document.getElementById("Play-Again");
-const columnEl = document.querySelectorAll("td");
-const rowEl = document.querySelectorAll("tr")
+const cellEl = document.querySelectorAll("td");
 
 /*----- event listeners -----*/
 
@@ -32,7 +31,6 @@ playAgainButton.addEventListener('click', init)
 
 function init(){
     chipCount = 42;
-    winner = null;
     winnerMsg.style.display = "none";
     startButton.style.display = "none";
     playAgainButton.style.display = "none";
@@ -50,7 +48,7 @@ function playAgain(){
     playerTracker.playerOne.playerEl.style.display = "none";
     playerTracker.playerTwo.playerEl.style.display = "none";
     playAgainButton.addEventListener('click', e =>{
-        columnEl.forEach(item =>{
+        cellEl.forEach(item =>{
             item.classList.remove("red", "hasChip", "blue", "yellow");
         });
         init();
@@ -81,23 +79,23 @@ function checkWinner(){
 }
 
 function horizontalWinnerCheck(){
-     for (let i = 0; i < columnEl.length; i++){
-        if(i+3 <= columnEl.length){  
-            if (columnEl[i].classList.contains('blue') && columnEl[i+1].classList.contains('blue') && columnEl[i+2].classList.contains('blue') && columnEl[i+3].classList.contains('blue')){
-                columnEl[i].classList.add("yellow");
-                columnEl[i+1].classList.add("yellow");
-                columnEl[i+2].classList.add("yellow");
-                columnEl[i+3].classList.add("yellow");
-                // let columns = [columnEl[i],columnEl[i+1],columnEl[i+2],columnEl[i+3]]
+     for (let i = 0; i < cellEl.length; i++){
+        if(i+3 <= cellEl.length){  
+            if (cellEl[i].classList.contains('blue') && cellEl[i+1].classList.contains('blue') 
+                && cellEl[i+2].classList.contains('blue') && cellEl[i+3].classList.contains('blue')){
+                cellEl[i].classList.add("yellow");
+                cellEl[i+1].classList.add("yellow");
+                cellEl[i+2].classList.add("yellow");
+                cellEl[i+3].classList.add("yellow");
                 playerTracker.playerOne.winner = true;
                 endGame();
             }else{
-                if(columnEl[i].classList.contains('red') && columnEl[i+1].classList.contains('red') && columnEl[i+2].classList.contains('red') && columnEl[i+3].classList.contains('red')){
-                    columnEl[i].classList.add("yellow");
-                    columnEl[i+1].classList.add("yellow");
-                    columnEl[i+2].classList.add("yellow");
-                    columnEl[i+3].classList.add("yellow");
-                    // let columns = [columnEl[i],columnEl[i+1],columnEl[i+2],columnEl[i+3]]
+                if(cellEl[i].classList.contains('red') && cellEl[i+1].classList.contains('red') 
+                    && cellEl[i+2].classList.contains('red') && cellEl[i+3].classList.contains('red')){
+                    cellEl[i].classList.add("yellow");
+                    cellEl[i+1].classList.add("yellow");
+                    cellEl[i+2].classList.add("yellow");
+                    cellEl[i+3].classList.add("yellow");
                     playerTracker.playerOne.winner = false;
                     endGame();
                 }
@@ -106,37 +104,24 @@ function horizontalWinnerCheck(){
     }
 }
 
-// function checkRows(columns){
-//     for (let i = 0; i < columns.length;i++){
-//         console.log(columns.parent);
-//         if (columns[i].parent(`Row-${i}`) 
-//         && columns[i+1].parentElement.classList.contains(`Row-${i}`)
-//         && columns[i+2].parentElement.classList.contains(`Row-${i}`) 
-//         && columns[i+3].parentElement.classList.contains(`Row-${i}`)){
-//         return true;
-//         }
-//     else{
-//         return false;
-//     }
-//     }
-// }
-
 function verticalWinnerCheck(){
-    for (let i = 0; i < columnEl.length; i++){
-        if(i+21 <=columnEl.length){
-            if ((columnEl[i].classList.contains('blue')) && (columnEl[i+7].classList.contains('blue')) && (columnEl[i+14].classList.contains('blue')) && (columnEl[i+21].classList.contains('blue'))){
-                columnEl[i].classList.add("yellow");
-                columnEl[i+7].classList.add("yellow");
-                columnEl[i+14].classList.add("yellow");
-                columnEl[i+21].classList.add("yellow");
+    for (let i = 0; i < cellEl.length; i++){
+        if(i+21 <=cellEl.length){
+            if ((cellEl[i].classList.contains('blue')) && (cellEl[i+7].classList.contains('blue')) 
+                && (cellEl[i+14].classList.contains('blue')) && (cellEl[i+21].classList.contains('blue'))){
+                cellEl[i].classList.add("yellow");
+                cellEl[i+7].classList.add("yellow");
+                cellEl[i+14].classList.add("yellow");
+                cellEl[i+21].classList.add("yellow");
                 playerTracker.playerOne.winner = true;
                 endGame();
             }else{
-                if((columnEl[i].classList.contains('red')) && (columnEl[i+7].classList.contains('red')) && (columnEl[i+14].classList.contains('red')) && (columnEl[i+21].classList.contains('red'))){
-                    columnEl[i].classList.add("yellow");
-                    columnEl[i+7].classList.add("yellow");
-                    columnEl[i+14].classList.add("yellow");
-                    columnEl[i+21].classList.add("yellow");
+                if((cellEl[i].classList.contains('red')) && (cellEl[i+7].classList.contains('red')) 
+                && (cellEl[i+14].classList.contains('red')) && (cellEl[i+21].classList.contains('red'))){
+                    cellEl[i].classList.add("yellow");
+                    cellEl[i+7].classList.add("yellow");
+                    cellEl[i+14].classList.add("yellow");
+                    cellEl[i+21].classList.add("yellow");
                     playerTracker.playerOne.winner = false;
                     endGame();
                 }   
@@ -146,21 +131,23 @@ function verticalWinnerCheck(){
 }
 
 function diagonalUpWinnerCheck(){
-    for (let i = 0; i <= columnEl.length; i++){
-        if(i+18 <=columnEl.length){
-            if (columnEl[i].classList.contains('blue') && columnEl[i+6].classList.contains('blue') && columnEl[i+12].classList.contains('blue') && columnEl[i+18].classList.contains('blue')){
-                columnEl[i].classList.add("yellow");
-                columnEl[i+6].classList.add("yellow");
-                columnEl[i+12].classList.add("yellow");
-                columnEl[i+18].classList.add("yellow");
+    for (let i = 0; i <= cellEl.length; i++){
+        if(i+18 <=cellEl.length){
+            if (cellEl[i].classList.contains('blue') && cellEl[i+6].classList.contains('blue') 
+                && cellEl[i+12].classList.contains('blue') && cellEl[i+18].classList.contains('blue')){
+                cellEl[i].classList.add("yellow");
+                cellEl[i+6].classList.add("yellow");
+                cellEl[i+12].classList.add("yellow");
+                cellEl[i+18].classList.add("yellow");
                 playerTracker.playerOne.winner = true;
                 endGame();
             }else{
-                if(columnEl[i].classList.contains('red') && columnEl[i+6].classList.contains('red') && columnEl[i+12].classList.contains('red') && columnEl[i+18].classList.contains('red')){
-                    columnEl[i].classList.add("yellow");
-                    columnEl[i+6].classList.add("yellow");
-                    columnEl[i+12].classList.add("yellow");
-                    columnEl[i+18].classList.add("yellow");
+                if(cellEl[i].classList.contains('red') && cellEl[i+6].classList.contains('red') 
+                    && cellEl[i+12].classList.contains('red') && cellEl[i+18].classList.contains('red')){
+                    cellEl[i].classList.add("yellow");
+                    cellEl[i+6].classList.add("yellow");
+                    cellEl[i+12].classList.add("yellow");
+                    cellEl[i+18].classList.add("yellow");
                     playerTracker.playerOne.winner = false;
                     endGame();
                 }
@@ -169,21 +156,23 @@ function diagonalUpWinnerCheck(){
     }
 }
 function diagonalDownWinnerCheck(){
-    for (let i = 0; i <= columnEl.length; i++){
-        if(i+24 <= columnEl.length){
-            if (columnEl[i].classList.contains('blue') && columnEl[i+8].classList.contains('blue') && columnEl[i+16].classList.contains('blue') && columnEl[i+24].classList.contains('blue')){
-                columnEl[i].classList.add("yellow");
-                columnEl[i+8].classList.add("yellow");
-                columnEl[i+16].classList.add("yellow");
-                columnEl[i+24].classList.add("yellow");
+    for (let i = 0; i <= cellEl.length; i++){
+        if(i+24 <= cellEl.length){
+            if (cellEl[i].classList.contains('blue') && cellEl[i+8].classList.contains('blue') 
+                && cellEl[i+16].classList.contains('blue') && cellEl[i+24].classList.contains('blue')){
+                cellEl[i].classList.add("yellow");
+                cellEl[i+8].classList.add("yellow");
+                cellEl[i+16].classList.add("yellow");
+                cellEl[i+24].classList.add("yellow");
                 playerTracker.playerOne.winner = true;
                 endGame();
             }else{
-                if(columnEl[i].classList.contains('red') && columnEl[i+8].classList.contains('red') && columnEl[i+16].classList.contains('red') && columnEl[i+24].classList.contains('red')){
-                    columnEl[i].classList.add("yellow");
-                    columnEl[i+8].classList.add("yellow");
-                    columnEl[i+16].classList.add("yellow");
-                    columnEl[i+24].classList.add("yellow");
+                if(cellEl[i].classList.contains('red') && cellEl[i+8].classList.contains('red') 
+                    && cellEl[i+16].classList.contains('red') && cellEl[i+24].classList.contains('red')){
+                    cellEl[i].classList.add("yellow");
+                    cellEl[i+8].classList.add("yellow");
+                    cellEl[i+16].classList.add("yellow");
+                    cellEl[i+24].classList.add("yellow");
                     playerTracker.playerOne.winner = false;
                     endGame();
                 }
@@ -196,6 +185,7 @@ function endGame(){
     if(chipCount == 0){
         winnerMsg.style.display = "block"
         winnerMsg.style.border ="8px solid black"
+        winnerMsg.style.background = "yellow"
         winnerMsg.innerText = "Draw!"
         playAgain();
     }
@@ -203,12 +193,14 @@ function endGame(){
         winnerMsg.style.display = "block"
         winnerMsg.style.border ="8px solid black"
         winnerMsg.innerText = "Player 1 Wins!"
+        winnerMsg.style.background = "yellow"
         
         playAgain();
     }else {
         winnerMsg.style.display = "block"
         winnerMsg.style.border ="8px solid black"
         winnerMsg.innerText = "Player 2 Wins!"
+        winnerMsg.style.background = "yellow"
         playAgain();
     }
 }
@@ -219,24 +211,26 @@ function rendor(){
     playerTracker.playerTwo.playerEl.classList.add("red");
     playerTracker.playerOne.playerEl.style.display = "block";
     playerTracker.playerTwo.playerEl.style.display = "block";
+
     for (const track in playerTracker){
         playerTracker[track].playerEl.innerText = playerTracker[track].turnString;
     }
 
-    for (let i = 0; i < columnEl.length; i++){     
-        columnEl[i].addEventListener('click', e =>{   
-        if (columnEl[i].classList.contains("Row1") || (columnEl[i+7].classList.contains("hasChip"))){
+    //Iterate through of the the cells
+    for (let i = 0; i < cellEl.length; i++){     
+        cellEl[i].addEventListener('click', e =>{   
+        if (cellEl[i].classList.contains("Row1") || (cellEl[i+7].classList.contains("hasChip"))){
                 if(playerTracker.playerOne.turn === true){
-                    if(!columnEl[i].classList.contains("blue") && !columnEl[i].classList.contains("red")){
-                        columnEl[i].classList.add('hasChip');
-                        columnEl[i].classList.add('blue');
+                    if(!cellEl[i].classList.contains("blue") && !cellEl[i].classList.contains("red")){
+                        cellEl[i].classList.add('hasChip');
+                        cellEl[i].classList.add('blue');
                         updatePlayersTurn(); 
                         checkWinner();
                     } 
                 }else{
-                    if(!columnEl[i].classList.contains("red") && !columnEl[i].classList.contains("blue")){
-                        columnEl[i].classList.add("hasChip");
-                        columnEl[i].classList.add('red');
+                    if(!cellEl[i].classList.contains("red") && !cellEl[i].classList.contains("blue")){
+                        cellEl[i].classList.add("hasChip");
+                        cellEl[i].classList.add('red');
                         updatePlayersTurn();
                         checkWinner();
                     }      
