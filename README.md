@@ -38,7 +38,7 @@ I used the `Whimsical` website to help plan out what the design of the game will
 
 # Getting Started
 
-_**[Click this link to play!](https://jvilla125.github.io/P1-Connect-Four-/)**_
+_**[Click this link to play!](https://jvilla125.github.io/P1-Connect-Four/)**_
 
 When the website loads, please press the **`"Press to Start Game"`** to start the game. 
 
