@@ -1,6 +1,14 @@
 h1{
-    padding: 10px;
+    padding: 20px;
     text-align: center;
+    background-color: white;
+    border: 5px solid black;
+    text-align: center;
+    width: 400px;
+}
+#header{
+    display: flex;
+    justify-content: center;
 }
 body{
     background-image: url("https://media.giphy.com/media/3oEjHZMFYibQnjvTq0/giphy.gif");
@@ -8,9 +16,19 @@ body{
     background-repeat: no-repeat;
     background-position: center center;
     margin: auto;
-    width: 1200px;
+    width: auto;
     height: auto;
     padding:0;
+}
+#game-board{
+    height: 540px;
+    width: 630px;
+    background: blue;
+    border: 10px solid navy;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 25px;
 }
 
 h2{
