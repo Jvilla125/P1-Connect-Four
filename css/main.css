@@ -20,7 +20,7 @@ body{
     height: auto;
     padding:0;
 }
-#game-board{
+#board{
     height: 540px;
     width: 630px;
     background: blue;
@@ -29,6 +29,15 @@ body{
     display: flex;
     flex-wrap: wrap;
     border-radius: 25px;
+}
+
+.tile{
+    height: 70px;
+    width: 70px;
+    background-color: white;
+    border-radius: 50%;
+    margin: 5px;
+    border: 5px solid navy;
 }
 
 h2{
