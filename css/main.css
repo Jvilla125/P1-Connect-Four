@@ -70,14 +70,18 @@ footer{
     justify-content: center;
     align-items: center;
 }
-.blue{
-    background-color: blue;
-}
+
 .red{
     background-color: red;
 }
 .yellow{
-    border: 5px solid yellow;
+    background-color: yellow;
+}
+.playerOnePiece{
+    background-color: red;
+}
+.playerTwoPiece{
+    background-color: yellow;
 }
 td{
     background-color: white;
