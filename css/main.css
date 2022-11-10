@@ -31,7 +31,7 @@ body{
     border-radius: 25px;
 }
 
-.tile{
+.chip{
     height: 70px;
     width: 70px;
     background-color: white;
