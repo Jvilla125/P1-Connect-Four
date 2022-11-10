@@ -6,6 +6,19 @@ h1{
     text-align: center;
     width: 400px;
 }
+
+h2{
+    padding: 20px;
+    background-color: white;
+    border: 5px solid black;
+    text-align: center;
+    width: 200px;
+ }
+#winner{
+    display: flex;
+    justify-content: center;
+}
+
 #header{
     display: flex;
     justify-content: center;
@@ -40,12 +53,7 @@ body{
     border: 5px solid navy;
 }
 
-h2{
-    text-align: center;
-    background-size: 20px;
-    margin: 10px 500px 10px 500px;
-    padding: 20px;
-}
+
 img{
    position: relative;
     height: 100px;

@@ -28,7 +28,7 @@ let columns = 7;
 
 // /*----- cached element references -----*/
 
-const winnerMsg = document.querySelector("h2");
+const winnerMsg = document.querySelector("#winner > h2");
 const turnTracker = document.querySelector("#Playerturntracker > p");
 const startButton = document.getElementById("Start-Button")
 const playAgainButton = document.getElementById("Play-Again");
@@ -61,7 +61,6 @@ function setPiece(){
     if (gameOver){
         return;
     }
-    // chipCount = 42;
     let coord = this.id.split("-"); 
     let r = parseInt(coord[0]);
     let c = parseInt(coord[1]);
@@ -87,14 +86,7 @@ function setPiece(){
     }
 
     r -= 1; // updating the row height for the column
-    chipCount--;
-    // if (chipCount == 0){
-    //     winnerMsg.style.display = "block"
-    //     winnerMsg.style.border ="8px solid black"
-    //     winnerMsg.style.background = "yellow"
-    //     winnerMsg.innerText = "Draw!"
-    //     gameOver = True;
-    // }
+ 
     currentColumns[c] = r; // update the array 
     checkWinner();
 }
@@ -176,18 +168,14 @@ function rendor(){
 }
 
 function setWinner(r, c){
-    let winner = document.getElementById("winner")
     if (board[r][c] == playerOne){
-        winner.innerText = "Player one wins!"
+        winnerMsg.innerText = "Player 1 Wins!"
         winnerMsg.style.display = "block"
-        winnerMsg.style.border = "8px solid black"
-        winnerMsg.innerText = "Player One Wins!"
         playAgain();
     }else{
-        winner.innerText = "Player Two Wins!"
-        winnerMsg.style.display = "block"
-        winnerMsg.style.border = "8px solid black"
         winnerMsg.innerText = "Player Two Wins!"
+        winnerMsg.style.display = "block"
+
         playAgain();
     }
     gameOver = true;
