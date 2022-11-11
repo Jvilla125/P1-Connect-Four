@@ -1,241 +1,190 @@
-
 /*----- app's state (variables) -----*/
-const playerTracker = {
+const playerTracker = { 
     playerOne: {
         playerEl: document.querySelector("#PlayerOne"),
+        color: "Red",
         turnString: "Player 1's turn",
-        turn: true,
-        winner: false
     },
     playerTwo: {
         playerEl: document.querySelector("#PlayerTwo"),
+        color: "Yellow",
         turnString: "Player 2's turn",
-        winner: false
     }
 };
+
+let playerOne = "Red";
+let playerTwo = "Yellow";
+let currentPlayer = playerOne;
+
+let gameOver = false;
+let board;
+
+let currentColumns = []; 
+let rows = 6;  
+let columns = 7;
+
 // /*----- cached element references -----*/
 
-const winnerMsg = document.querySelector("h2");
-const playerOne = document.querySelector("#Playerturntracker > p");
+const winnerMsg = document.querySelector("#winner > h2");
+const turnTracker = document.querySelector("#Playerturntracker > p");
 const startButton = document.getElementById("Start-Button")
 const playAgainButton = document.getElementById("Play-Again");
-const cellEl = document.querySelectorAll("td");
-
 /*----- event listeners -----*/
 
 startButton.addEventListener('click', init)
 playAgainButton.addEventListener('click', init)
 /*----- functions -----*/
 
-function init(){        //init function restarts the screen everytime it is called
-    chipCount = 42;
-    winnerMsg.style.display = "none";
+function init(){
     startButton.style.display = "none";
+    winnerMsg.style.display = "none";
     playAgainButton.style.display = "none";
     playerTracker.playerTwo.playerEl.style.border = "none"
-    playerTracker.playerOne.turn = true;
     rendor();
 }
 
-function playAgain(){      //playAgain function is called after there is a winner, diplays the start button after there is a winner
-    playAgainButton.style.display = "block"    
-    playerTracker.playerOne.playerEl.style.border = "none";
-    playerTracker.playerOne.playerEl.classList.remove("blue");
-    playerTracker.playerTwo.playerEl.classList.remove("red");
-    playerTracker.playerTwo.playerEl.style.border = "none";
-    playerTracker.playerOne.playerEl.style.display = "none";
-    playerTracker.playerTwo.playerEl.style.display = "none";
-    playAgainButton.addEventListener('click', e =>{
-        cellEl.forEach(item =>{
-            item.classList.remove("red", "hasChip", "blue", "yellow");
-        });
-        init();
-    });
+function rendor(){
+    setGame();
+    playerTracker.playerOne.playerEl.style.border = "8px solid black";
+    playerTracker.playerOne.playerEl.classList.add("red");
+    playerTracker.playerTwo.playerEl.classList.add("yellow");
+    playerTracker.playerOne.playerEl.style.display = "block";
+    playerTracker.playerOne.playerEl.style.display = "block";
+    for (const track in playerTracker){
+        playerTracker[track].playerEl.innerText = playerTracker[track].turnString;
+    }
 }
 
-function updatePlayersTurn(){       //After each turn, the total chip count is being reduced by 1
-    chipCount--;                    // as there are only 42 total turns. If that runs out before there is a winner
-    if (chipCount == 0){            // then the game will end in a draw
-        endGame();
+function setGame(){
+    board = [];
+    currentColumns = [5, 5, 5, 5, 5, 5, 5];
+    for (let r = 0; r < rows; r++){
+        let row = [];
+        for (let c = 0; c < columns; c++){
+            row.push(' ');
+            let chip = document.createElement('div');
+            chip.id = r.toString() + "-" + c.toString();
+            chip.classList.add("chip");
+            chip.addEventListener("click", setPiece);
+            document.getElementById("board").append(chip);
+        }
+        board.push(row);
     }
-    if (playerTracker.playerOne.turn === true){
-        playerTracker.playerOne.playerEl.style.border = "none"
+}
+
+function setPiece(){
+    if (gameOver){
+        return;
+    }
+    let coord = this.id.split("-"); 
+    let r = parseInt(coord[0]);
+    let c = parseInt(coord[1]);
+
+    r = currentColumns[c];
+    if (r < 0) {
+        return; 
+    }
+    board[r][c] = currentPlayer;
+    let chip = document.getElementById(r.toString() + "-" + c.toString());
+    
+    if (currentPlayer == playerOne){
+        chip.classList.add("playerOnePiece");
+        playerTracker.playerOne.playerEl.style.border = "none";
         playerTracker.playerTwo.playerEl.style.border = "8px solid black";
-        playerTracker.playerOne.turn = false;
-    }else{
+        currentPlayer = playerTwo;
+    }
+    else {
+        chip.classList.add("playerTwoPiece");
         playerTracker.playerOne.playerEl.style.border = "8px solid black";
         playerTracker.playerTwo.playerEl.style.border = "none";
-        playerTracker.playerOne.turn = true;
+        currentPlayer = playerOne;
     }
+
+    r -= 1; // updating the row height for the column
+ 
+    currentColumns[c] = r; // update the array 
+    checkWinner();
 }
 
-function checkWinner(){         //There are four conditions that we need to check for a winner
-    horizontalWinnerCheck();
-    verticalWinnerCheck();
-    diagonalUpWinnerCheck();
-    diagonalDownWinnerCheck();
-}
-
-function horizontalWinnerCheck(){   //horizontal chekcs if 4 cells have the same class and if they do
-     for (let i = 0; i < cellEl.length; i++){   //add the class "yellow" to highlight the winning chips
-        if(i+3 <= cellEl.length){  
-            if (cellEl[i].classList.contains('blue') && cellEl[i+1].classList.contains('blue') 
-                && cellEl[i+2].classList.contains('blue') && cellEl[i+3].classList.contains('blue')){
-                cellEl[i].classList.add("yellow");
-                cellEl[i+1].classList.add("yellow");
-                cellEl[i+2].classList.add("yellow");
-                cellEl[i+3].classList.add("yellow");
-                playerTracker.playerOne.winner = true;
-                endGame();
-            }else{
-                if(cellEl[i].classList.contains('red') && cellEl[i+1].classList.contains('red') 
-                    && cellEl[i+2].classList.contains('red') && cellEl[i+3].classList.contains('red')){
-                    cellEl[i].classList.add("yellow");
-                    cellEl[i+1].classList.add("yellow");
-                    cellEl[i+2].classList.add("yellow");
-                    cellEl[i+3].classList.add("yellow");
-                    playerTracker.playerOne.winner = false;
-                    endGame();
+function checkWinner(){
+    // horizontally
+    for (let r = 0; r < rows; r++){
+        for (let c = 0; c < columns - 3; c++){
+            if(board[r][c] != " "){
+                if(board[r][c] == board[r][c+1] &&
+                    board[r][c+1] == board[r][c+2] &&
+                    board[r][c+2] == board[r][c+3]){
+                    setWinner(r, c);
+                    return;
                 }
-            } 
+            }
         }
     }
-}
-
-function verticalWinnerCheck(){
-    for (let i = 0; i < cellEl.length; i++){
-        if(i+21 <=cellEl.length){
-            if ((cellEl[i].classList.contains('blue')) && (cellEl[i+7].classList.contains('blue')) 
-                && (cellEl[i+14].classList.contains('blue')) && (cellEl[i+21].classList.contains('blue'))){
-                cellEl[i].classList.add("yellow");
-                cellEl[i+7].classList.add("yellow");
-                cellEl[i+14].classList.add("yellow");
-                cellEl[i+21].classList.add("yellow");
-                playerTracker.playerOne.winner = true;
-                endGame();
-            }else{
-                if((cellEl[i].classList.contains('red')) && (cellEl[i+7].classList.contains('red')) 
-                && (cellEl[i+14].classList.contains('red')) && (cellEl[i+21].classList.contains('red'))){
-                    cellEl[i].classList.add("yellow");
-                    cellEl[i+7].classList.add("yellow");
-                    cellEl[i+14].classList.add("yellow");
-                    cellEl[i+21].classList.add("yellow");
-                    playerTracker.playerOne.winner = false;
-                    endGame();
-                }   
+    // vertically
+    for (let c = 0; c < columns; c++){
+        for (let r = 0; r < rows-3; r++){
+            if (board[r][c] != " "){
+                if (board[r][c] == board[r+1][c] &&
+                    board[r+1][c] == board[r+2][c] &&
+                    board[r+2][c] == board[r+3][c]){
+                    setWinner(r, c);
+                    return;
+                }
+            }
+        }
+    }
+    // diagonal
+    for (let r = 3; r < rows; r++) {
+        for (let c = 0; c < columns - 3; c++) {
+            if (board[r][c] != ' ') {
+                if (board[r][c] == board[r-1][c+1] && 
+                    board[r-1][c+1] == board[r-2][c+2] && 
+                    board[r-2][c+2] == board[r-3][c+3]) {
+                    setWinner(r, c);
+                    return;
+                }
+            }
+        }
+    }
+    // reverse diagonal
+    for (let r = 0; r < rows - 3; r++) {
+        for (let c = 0; c < columns - 3; c++) {
+            if (board[r][c] != ' ') {
+                if (board[r][c] == board[r+1][c+1] && 
+                    board[r+1][c+1] == board[r+2][c+2] && 
+                    board[r+2][c+2] == board[r+3][c+3]) {
+                    setWinner(r, c);
+                    return;
+                }
             }
         }
     }
 }
 
-function diagonalUpWinnerCheck(){
-    for (let i = 0; i <= cellEl.length; i++){
-        if(i+18 <=cellEl.length){
-            if (cellEl[i].classList.contains('blue') && cellEl[i+6].classList.contains('blue') 
-                && cellEl[i+12].classList.contains('blue') && cellEl[i+18].classList.contains('blue')){
-                cellEl[i].classList.add("yellow");
-                cellEl[i+6].classList.add("yellow");
-                cellEl[i+12].classList.add("yellow");
-                cellEl[i+18].classList.add("yellow");
-                playerTracker.playerOne.winner = true;
-                endGame();
-            }else{
-                if(cellEl[i].classList.contains('red') && cellEl[i+6].classList.contains('red') 
-                    && cellEl[i+12].classList.contains('red') && cellEl[i+18].classList.contains('red')){
-                    cellEl[i].classList.add("yellow");
-                    cellEl[i+6].classList.add("yellow");
-                    cellEl[i+12].classList.add("yellow");
-                    cellEl[i+18].classList.add("yellow");
-                    playerTracker.playerOne.winner = false;
-                    endGame();
-                }
-            } 
-        }  
-    }
-}
-function diagonalDownWinnerCheck(){
-    for (let i = 0; i <= cellEl.length; i++){
-        if(i+24 <= cellEl.length){
-            if (cellEl[i].classList.contains('blue') && cellEl[i+8].classList.contains('blue') 
-                && cellEl[i+16].classList.contains('blue') && cellEl[i+24].classList.contains('blue')){
-                cellEl[i].classList.add("yellow");
-                cellEl[i+8].classList.add("yellow");
-                cellEl[i+16].classList.add("yellow");
-                cellEl[i+24].classList.add("yellow");
-                playerTracker.playerOne.winner = true;
-                endGame();
-            }else{
-                if(cellEl[i].classList.contains('red') && cellEl[i+8].classList.contains('red') 
-                    && cellEl[i+16].classList.contains('red') && cellEl[i+24].classList.contains('red')){
-                    cellEl[i].classList.add("yellow");
-                    cellEl[i+8].classList.add("yellow");
-                    cellEl[i+16].classList.add("yellow");
-                    cellEl[i+24].classList.add("yellow");
-                    playerTracker.playerOne.winner = false;
-                    endGame();
-                }
-            } 
-        }
-    }
-}
- 
-function endGame(){         //After there is a winner or draw, this function displays a messing on the header
-    if(chipCount == 0){     // and calls the function 'playAgain' to ask the user if they want to restart
-        winnerMsg.style.display = "block"
-        winnerMsg.style.border ="8px solid black"
-        winnerMsg.style.background = "yellow"
-        winnerMsg.innerText = "Draw!"
-        playAgain();
-    }
-    else if (playerTracker.playerOne.winner == true){
-        winnerMsg.style.display = "block"
-        winnerMsg.style.border ="8px solid black"
+function setWinner(r, c){
+    if (board[r][c] == playerOne){
         winnerMsg.innerText = "Player 1 Wins!"
-        winnerMsg.style.background = "yellow"
-        
-        playAgain();
-    }else {
         winnerMsg.style.display = "block"
-        winnerMsg.style.border ="8px solid black"
-        winnerMsg.innerText = "Player 2 Wins!"
-        winnerMsg.style.background = "yellow"
+        playAgain();
+    }else{
+        winnerMsg.innerText = "Player Two Wins!"
+        winnerMsg.style.display = "block"
         playAgain();
     }
+    
+    gameOver = true;
 }
 
-function rendor(){
-    playerTracker.playerOne.playerEl.style.border = "8px solid black";
-    playerTracker.playerOne.playerEl.classList.add("blue");
-    playerTracker.playerTwo.playerEl.classList.add("red");
-    playerTracker.playerOne.playerEl.style.display = "block";
-    playerTracker.playerTwo.playerEl.style.display = "block";
-
-    for (const track in playerTracker){
-        playerTracker[track].playerEl.innerText = playerTracker[track].turnString;
-    }
-
-    //Iterate through all of the cells 'cellEl.length' and create an 'click'
-    //event listener for each cell 
-    for (let i = 0; i < cellEl.length; i++){     
-        cellEl[i].addEventListener('click', e =>{   
-        if (cellEl[i].classList.contains("Row1") || (cellEl[i+7].classList.contains("hasChip"))){
-                if(playerTracker.playerOne.turn === true){
-                    if(!cellEl[i].classList.contains("blue") && !cellEl[i].classList.contains("red")){
-                        cellEl[i].classList.add('hasChip');
-                        cellEl[i].classList.add('blue');
-                        updatePlayersTurn(); 
-                        checkWinner();
-                    } 
-                }else{
-                    if(!cellEl[i].classList.contains("red") && !cellEl[i].classList.contains("blue")){
-                        cellEl[i].classList.add("hasChip");
-                        cellEl[i].classList.add('red');
-                        updatePlayersTurn();
-                        checkWinner();
-                    }      
-                }      
-            }   
-        });
+function playAgain(){      //playAgain function is called after there is a winner, diplays the start button after there is a winner
+    playAgainButton.style.display = "block"    
+    playerTracker.playerOne.playerEl.style.border = "none";
+    playerTracker.playerTwo.playerEl.style.border = "none";
+    playerTracker.playerOne.playerEl.classList.remove("red");
+    playerTracker.playerTwo.playerEl.classList.remove("yellow");
+    playerTracker.playerOne.playerEl.style.display = "none";
+    playerTracker.playerTwo.playerEl.style.display = "none";
+    playAgainButton.onclick = function () {
+        location.reload();
     }
 }
 
