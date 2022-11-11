@@ -1,16 +1,59 @@
 h1{
-    padding: 10px;
+    padding: 20px;
     text-align: center;
+    background-color: rgb(72, 170, 219);
+    border: 5px solid black;
+    text-align: center;
+    width: 400px;
+}
+
+h2{
+    padding: 20px;
+    background-color: rgb(72, 170, 219);
+    border: 5px solid black;
+    text-align: center;
+    width: 200px;
+ }
+#winner{
+    display: flex;
+    justify-content: center;
+}
+
+#header{
+    display: flex;
+    justify-content: center;
 }
 body{
-    background-color: rgb(212, 226, 204);
+    background-image: url("https://media.giphy.com/media/3oEjHZMFYibQnjvTq0/giphy.gif");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: auto;
+    width: auto;
+    height: auto;
+    padding:0;
 }
-h2{
-    text-align: center;
-    background-size: 20px;
-    margin: 10px 500px 10px 500px;
-    padding: 20px;
+#board{
+    height: 540px;
+    width: 630px;
+    background: blue;
+    border: 10px solid navy;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 25px;
 }
+
+.chip{
+    height: 70px;
+    width: 70px;
+    background-color: white;
+    border-radius: 50%;
+    margin: 5px;
+    border: 5px solid navy;
+}
+
+
 img{
     position: relative;
     height: 100px;
@@ -35,26 +78,30 @@ footer{
     justify-content: center;
     align-items: center;
 }
-.blue{
-    background-color: blue;
-}
+
 .red{
     background-color: red;
 }
 .yellow{
-    border: 5px solid yellow;
+    background-color: yellow;
+}
+.playerOnePiece{
+    background-color: red;
+}
+.playerTwoPiece{
+    background-color: yellow;
 }
 td{
     background-color: white;
 }
 #Play-Again{
     font-size: 25px; 
-    background-color: rgb(106, 173, 196);
+    background-color: rgb(72, 170, 219);
     margin: 40px;
 }
 #Start-Button{
    font-size: 25px; 
-   background-color: rgb(27, 155, 169);
+   background-color: rgb(72, 170, 219);
 }
 #Playerturntracker > p{
     display: flex;
@@ -63,7 +110,7 @@ td{
     padding: 10px;
     font-size: 20px;
     font-weight: bold;
-    color: white
+    color: black;
 }
 #Scoretracker > p > p{
     display: flex;
