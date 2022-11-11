@@ -1,5 +1,3 @@
-/*----- constants -----*/
-let chipCount;
 
 /*----- app's state (variables) -----*/
 const playerTracker = {
