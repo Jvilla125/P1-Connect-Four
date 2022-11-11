@@ -32,12 +32,31 @@ const winnerMsg = document.querySelector("#winner > h2");
 const turnTracker = document.querySelector("#Playerturntracker > p");
 const startButton = document.getElementById("Start-Button")
 const playAgainButton = document.getElementById("Play-Again");
-const chipClass = document.querySelectorAll('chip')
 /*----- event listeners -----*/
 
 startButton.addEventListener('click', init)
 playAgainButton.addEventListener('click', init)
 /*----- functions -----*/
+
+function init(){
+    startButton.style.display = "none";
+    winnerMsg.style.display = "none";
+    playAgainButton.style.display = "none";
+    playerTracker.playerTwo.playerEl.style.border = "none"
+    rendor();
+}
+
+function rendor(){
+    setGame();
+    playerTracker.playerOne.playerEl.style.border = "8px solid black";
+    playerTracker.playerOne.playerEl.classList.add("red");
+    playerTracker.playerTwo.playerEl.classList.add("yellow");
+    playerTracker.playerOne.playerEl.style.display = "block";
+    playerTracker.playerOne.playerEl.style.display = "block";
+    for (const track in playerTracker){
+        playerTracker[track].playerEl.innerText = playerTracker[track].turnString;
+    }
+}
 
 function setGame(){
     board = [];
@@ -46,7 +65,6 @@ function setGame(){
         let row = [];
         for (let c = 0; c < columns; c++){
             row.push(' ');
-            // HTML
             let chip = document.createElement('div');
             chip.id = r.toString() + "-" + c.toString();
             chip.classList.add("chip");
@@ -146,27 +164,6 @@ function checkWinner(){
     }
 }
 
-function init(){
-    startButton.style.display = "none";
-    winnerMsg.style.display = "none";
-    playAgainButton.style.display = "none";
-    playerTracker.playerTwo.playerEl.style.border = "none"
-    rendor();
-}
-
-function rendor(){
-    setGame();
-    playerTracker.playerOne.playerEl.style.border = "8px solid black";
-    playerTracker.playerOne.playerEl.classList.add("red");
-    playerTracker.playerTwo.playerEl.classList.add("yellow");
-    playerTracker.playerOne.playerEl.style.display = "block";
-    playerTracker.playerOne.playerEl.style.display = "block";
-
-    for (const track in playerTracker){
-        playerTracker[track].playerEl.innerText = playerTracker[track].turnString;
-    }
-}
-
 function setWinner(r, c){
     if (board[r][c] == playerOne){
         winnerMsg.innerText = "Player 1 Wins!"
@@ -175,9 +172,9 @@ function setWinner(r, c){
     }else{
         winnerMsg.innerText = "Player Two Wins!"
         winnerMsg.style.display = "block"
-
         playAgain();
     }
+    
     gameOver = true;
 }
 
@@ -189,12 +186,9 @@ function playAgain(){      //playAgain function is called after there is a winne
     playerTracker.playerTwo.playerEl.classList.remove("yellow");
     playerTracker.playerOne.playerEl.style.display = "none";
     playerTracker.playerTwo.playerEl.style.display = "none";
-    playAgainButton.addEventListener('click', e =>{
-        chipClass.forEach(item =>{
-            item.classList.remove("playerOnePiece", "playerTwoPiece");
-        });
-        setGame();
-    });
+    playAgainButton.onclick = function () {
+        location.reload();
+    }
 }
 
 
