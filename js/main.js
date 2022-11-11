@@ -190,5 +190,3 @@ function playAgain(){      //playAgain function is called after there is a winne
 
 
 
-
-
