@@ -1,5 +1,3 @@
-/*----- constants -----*/
-
 
 /*----- app's state (variables) -----*/
 const playerTracker = {
