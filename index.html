@@ -6,71 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel = "stylesheet" href="css/main.css">
     <script defer src="js/main.js"></script>
-    <title>Document</title>
+    <title>Connect Four</title>
 </head>
 <body>
-    <h1>Welcome to Connect Four!</h1>
-    <h2></h2>
-    <div id="Connectfour">
-    </div>
-    <div>
-        <table id="table">  
-            <tr id="Row-6">
-                <td id="42"></td>
-                <td id="41"></td>
-                <td id="40"></td>
-                <td id="39"></td>
-                <td id="38"></td>
-                <td id="37"></td>
-                <td id="36"></td>
-            </tr>
-            <tr id="Row-5">
-                <td id="35"></td>
-                <td id="34"></td>
-                <td id="33"></td>
-                <td id="32"></td>
-                <td id="31"></td>
-                <td id="30"></td>
-                <td id="29"></td>
-            </tr>
-            <tr id="Row-4">
-                <td id="28"></td>
-                <td id="27"></td>
-                <td id="26"></td>
-                <td id="25"></td>
-                <td id="24"></td>
-                <td id="23"></td>
-                <td id="22"></td>
-            </tr>
-            <tr id="Row-3">
-                <td id="21"></td>
-                <td id="20"></td>
-                <td id="19"></td>
-                <td id="18"></td>
-                <td id="17"></td>
-                <td id="16"></td>
-                <td id="15"></td>
-            </tr>
-            <tr id="Row-2">
-                <td id="14"></td>
-                <td id="13"></td>
-                <td id="12"></td>
-                <td id="11"></td>
-                <td id="10"></td>
-                <td id="9"></td>
-                <td id="8"></td>
-            </tr>
-            <tr id="Row-1">
-                <td id="7" class="Row1"></td>
-                <td id="6" class="Row1"></td>
-                <td id="5" class="Row1"></td>
-                <td id="4" class="Row1"></td>
-                <td id="3" class="Row1"></td>
-                <td id="2" class="Row1"></td>
-                <td id="1" class="Row1"></td>           
-            </tr>
-        </table>
-    </div>
+    <div id="header"><h1>Welcome to Connect Four!</h1></div>
+    <div id="winner" ><h2 style="display: none"></h2></div>
+    <!-- <audio src="/music/music.wav" controls > -->
+        <!-- <source src="/music/music.wav" type="audio/wav">? -->
+    <!-- </audio> -->
+    <div id="Connectfour"></div>
+    <div id="board"></div>
     <footer>
         <div>
             <button id="Start-Button" >Press to Start Game</button>
